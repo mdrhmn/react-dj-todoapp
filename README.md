@@ -9,14 +9,12 @@ off Django (including the Django REST Framework for API CRUD operations) and Rea
 ## Technology Stack
 
 ### Front-end
-
 * react@17.0.1
     * react-dom@17.0.1
 * axios@0.21.0
 * bootstrap@4.5.3
 * reactstrap@8.7.1
 ### Back-end
-
 * Django==3.1.3
     * djangorestframework==3.12.2
     * django-cors-headers==3.5.0
@@ -28,5 +26,9 @@ off Django (including the Django REST Framework for API CRUD operations) and Rea
 * psycopg2==2.8.6
 * psycopg2-binary==2.8.6
 
+## Prerequisites
+
+### 1. Install Node.js
+Download Node.js and Node Package Manager (NPM) **[here](https://nodejs.org/en/)**.
 
 
