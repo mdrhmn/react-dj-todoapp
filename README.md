@@ -831,7 +831,7 @@ This error can be resolved by running ```$ python3 manage.py migrate --run-syncd
 $ heroku run python3 manage.py migrate --run-syncdb
 ``` 
 
-And if everything goes well up to this point, **congratulations!** You have successfully deployed your first React-Django web app!<br>
+And if everything goes well up to this point, **congratulations!** You have successfully deployed your first React-Django web app!<br><br>
 
 
 ### 8. Debugging
