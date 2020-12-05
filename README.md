@@ -156,8 +156,8 @@ In order to allow for API CRUD operations between both front and back end, we ne
 The image below essentially sums up the application architecture of a React-Django stack web app:
 ![alt text](https://bezkoder.com/wp-content/uploads/2020/03/django-react-axios-rest-framework-crud-architecture.png)
 
-- Django exports REST APIs using Django REST Framework and interacts with Database using Django Model.
-- React Client sends HTTP Requests and retrieve HTTP Responses using axios, shows data on the components.
+* Django exports REST APIs using Django REST Framework and interacts with Database using Django Model.
+* React Client sends HTTP Requests and retrieve HTTP Responses using axios, shows data on the components.
 
 After installing all the necessary requirements in Step 2, we need to add rest_framework and corsheaders to the list of installed applications, so open the backend/settings.py file and update the INSTALLED_APPS and MIDDLEWARE sections accordingly:
 
