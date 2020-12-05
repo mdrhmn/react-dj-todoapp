@@ -23,7 +23,9 @@ class App extends Component {
 
 	refreshList = () => {
 		axios
-			.get("http://localhost:8000/api/todos/")
+			// .get("http://localhost:8000/api/todos/")
+			// Because of proxy in package.json, command be shorten as follows:
+			.get("/api/todos/")
 			.then(res => this.setState({ todoList: res.data }))
 			.catch(err => console.log(err));
 	};
@@ -53,6 +55,7 @@ class App extends Component {
 			</div>
 		);
 	};
+	
 	renderItems = () => {
 		const { viewCompleted } = this.state;
 		const newItems = this.state.todoList.filter(
@@ -75,7 +78,6 @@ class App extends Component {
 						onClick={() => this.editItem(item)}
 						className="btn btn-secondary mr-2"
 					>
-
 						Edit
 					</button>
 					<button
@@ -88,7 +90,7 @@ class App extends Component {
 			</li>
 		));
 	};
-	
+
 	toggle = () => {
 		this.setState({ modal: !this.state.modal });
 	};
@@ -97,18 +99,24 @@ class App extends Component {
 		this.toggle();
 		if (item.id) {
 			axios
-				.put(`http://localhost:8000/api/todos/${item.id}/`, item)
+				// Because of proxy in package.json, command be shorten as follows:
+				// .put(`http://localhost:8000/api/todos/${item.id}/`, item)
+				.put(`/api/todos/${item.id}/`, item)
 				.then(res => this.refreshList());
 			return;
 		}
 		axios
-			.post("http://localhost:8000/api/todos/", item)
+			// Because of proxy in package.json, command be shorten as follows:
+			// .post("http://localhost:8000/api/todos/", item)
+			.post("/api/todos/", item)
 			.then(res => this.refreshList());
 	};
 
 	handleDelete = item => {
 		axios
-			.delete(`http://localhost:8000/api/todos/${item.id}`)
+			// Because of proxy in package.json, command be shorten as follows:
+			// .delete(`http://localhost:8000/api/todos/${item.id}`)
+			.delete(`/api/todos/${item.id}`)
 			.then(res => this.refreshList());
 	};
 
@@ -124,7 +132,7 @@ class App extends Component {
 	render() {
 		return (
 			<main className="content">
-				<h1 className="text-white text-uppercase text-center my-4">Todo app</h1>
+				<h1 className="text-white text-center my-4">Ray's Todo App</h1>
 				<div className="row ">
 					<div className="col-md-6 col-sm-10 mx-auto p-0">
 						<div className="card p-3">
