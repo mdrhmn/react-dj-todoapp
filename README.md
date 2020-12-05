@@ -579,24 +579,24 @@ Test everything out by running the local Django server using ```python3 manage.p
 
 ### Static files serve (WhiteNoise)
 
-#### A. WhiteNoise settings
+    #### A. WhiteNoise settings
 
-**[WhiteNoise](http://whitenoise.evans.io/en/stable/)** allows your web app to serve its own static files, making it a self-contained unit that can be deployed anywhere without relying on nginx, Amazon S3 or any other external service. (Especially useful on Heroku, OpenShift and other PaaS providers.)
+    **[WhiteNoise](http://whitenoise.evans.io/en/stable/)** allows your web app to serve its own static files, making it a self-contained unit that can be deployed anywhere without relying on nginx, Amazon S3 or any other external service. (Especially useful on Heroku, OpenShift and other PaaS providers.)
 
-Since this is already installed from the ```requirements.txt``` file earlier on, we need to update ```settings.py```:
+    Since this is already installed from the ```requirements.txt``` file earlier on, we need to update ```settings.py```:
 
 
-```Python
-# backend/settings.py
+    ```Python
+    # backend/settings.py
 
-MIDDLEWARE = [
-  'django.middleware.security.SecurityMiddleware',
-  'whitenoise.middleware.WhiteNoiseMiddleware',
-  # ...
-]
+    MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # ...
+    ]
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-``` 
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    ``` 
 
 #### B. Static files and template settings
 
