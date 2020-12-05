@@ -574,7 +574,7 @@ options = DATABASES['default'].get('OPTIONS', {})
 options.pop('sslmode', None)
 ``` 
 
-Test everything out by running the local Django server using ```python3 manage.py runserver```.<br>
+Test everything out by running the local Django server using ```python3 manage.py runserver```.<br><br>
 
 
 ### Static files serve (WhiteNoise)
@@ -681,9 +681,10 @@ class Assets(View):
         else:
             return HttpResponseNotFound()
 
-``` 
+```
+<br><br> 
 
-### Debug and Access
+### 3. Debug and Access
 
 During production, it is strongly recommended that ```DEBUG``` is set to ```False```. 
 
@@ -702,8 +703,9 @@ Else, you need to specify the URL access permissions as follows:
 
 ALLOWED_HOSTS = ['react-dj-todoapp.herokuapp.com', '127.0.0.1:8000', 'localhost']
 ``` 
+<br><br>
 
-### 3. Configure the React front-end side
+### 4. Configure the React front-end side
 
 #### A. Configure package.json
 
@@ -763,7 +765,8 @@ import axios from 'axios';
 
 axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
-``` 
+```
+<br><br>
 
 ### 4. Set up Heroku-specific files
 
