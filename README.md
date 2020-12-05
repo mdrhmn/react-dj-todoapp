@@ -448,10 +448,63 @@ Here is a outline following Heroku's from-product-to-productionized instructions
 
     * Our app would run on a Python server, even though we’ll use Node/NPM to build/bundle the React frontend. So the Python buildpack will be the main one in our config. The main buildpack determines the process type of the Heroku app. You can read about multiple buildpacks to understand how they work.
 
-    * You can add buildpacks via the Heroku CLI. Head back to your terminal and run the following to set/add the buildpacks we need.
-### 2. Configure the Django side
+    * You can add buildpacks via the Heroku CLI. Head back to your terminal and run the following to set/add the buildpacks we need:
 
-#### settings.py
+    ```Shell
+    $ heroku buildpacks:add --index 1 heroku/nodejs
+    $ heroku buildpacks:add --index 2 heroku/python
+    ``` 
+    * Note that the buildpacks **must be added in that order**. We can see the buildpacks we’ve added by running ```$ heroku buildpacks```. The last buildpack on the list determines the process type of the app.
+
+    ![alt text](https://alphacoder.xyz/images/dply-dj/buildpacks.png)
+
+7. Configure PostgreSQL Heroku addon
+   
+    * During production, Heroku will not be using SQLite database. Instead, we need to use PostgreSQL by    configuring the addon to our app using ```$ heroku addons:create heroku-postgresql:hobby-dev```
+    * You can check whether this is successful by running ```$ heroku config```:
+    
+     ```Shell
+    $ === APP_NAME Config Vars
+    DATABASE_URL: postgres://[DATABASE_INFO_HERE]
+    ``` 
+    * The database info from the code snippet above refers to the URL containing your database’s location and access credentials all in one. Anyone with this URL can access your database, so be careful with it.
+    * You’ll notice that Heroku saves it as an environment variable called ```DATABASE_URL``` . This URL can and does change, so you should never hard code it. Instead, we’ll use the variable ```DATABASE_URL``` in  Django.
+
+8. Configure Heroku config variables
+
+    * According to Heroku, config vars are environment variables that can change the way your app behaves. In addition to creating your own, some add-ons come with their own.
+    * There are several environment variables that need to be set:
+
+    ```Shell
+    $ heroku config:set ALLOWED_HOSTS=APP_NAME.herokuapp.com
+    $ heroku config:set ALLOWED_HOSTS=APP_NAME.herokuapp.com
+    $ heroku config:set SECRET_KEY=DJANGO_SECRET_KEY
+    $ heroku config:set WEB_CONCURRENCY=1
+    ``` 
+  
+### 2. Configure the Django back-end side
+
+
+#### Database Configuration
+
+##### Create .env
+As mentioned above, the local version of the Django app is using db.sqlite3 as its database. However, when we visit the Heroku version, APP_NAME.herokuapp.com, Heroku will need to use a PostgreSQL database instead.
+
+What we want to do is to get our app running with SQLite whenever we’re working on it locally, and with Postgres whenever it’s in production. This can be done using the installed ```python-dotenv``` library.
+
+We will then use a file called ```.env``` to tell Django to use SQLite when running locally. To create ```.env``` and have it point Django to your SQLite database:
+
+```Shell
+    $ echo 'DATABASE_URL=sqlite:///db.sqlite3' > .env
+``` 
+
+Include the ```.env``` file inside our .gitignore when pushing to Heroku by running the following command:
+
+```Shell
+    $ echo '.env' >> .gitignore
+``` 
+
+##### Update settings.py
 
 First, import the necessary libraries for deployment purposes:
 
@@ -475,7 +528,6 @@ dotenv_file = os.path.join(BASE_DIR, ".env")
 if os.path.isfile(dotenv_file):
     dotenv.load_dotenv(dotenv_file)
 
-
-
 ``` 
 
+Since ```.env``` won’t exist on Heroku, ```dotenv.load_dotenv(dotenv_file)``` will never get called on Heroku and Heroku will proceed to try to find its own database — PostgreSQL.
