@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '8cbt66kg@!-3l2dgeaqmarjgy6wy0h+7(&+a^2*hd3olh6vj*b'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['react-dj-todoapp.herokuapp.com', '127.0.0.1:8000']
+ALLOWED_HOSTS = ['react-dj-todoapp.herokuapp.com', '127.0.0.1:8000', 'localhost']
 
 
 # Application definition
@@ -123,9 +123,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = []
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'build/static')
+]
    
-STATIC_ROOT = os.path.join(BASE_DIR, 'build', 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
