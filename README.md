@@ -122,8 +122,7 @@ $ python manage.py runserver
 
 If everything works well, we should see an instance of a Django application running on this address — http://localhost:8000
 
-https://scotch-res.cloudinary.com/image/upload/v1542486456/ia8jlkozut4uxwatnqwp.png
-
+![alt text](https://scotch-res.cloudinary.com/image/upload/v1542486456/ia8jlkozut4uxwatnqwp.png)
 ### 5. Register new Django app
 
 Open the backend/settings.py file and update the INSTALLED_APPS section as so:
@@ -138,6 +137,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'todo' # add this
+    'todo' # Add this
 ]
 ``` 
+
+### 5. Set up the APIs
+
+In order to allow for API CRUD operations between both front and back end, we need to utilise the **Django REST Framework** as well as **Django CORS Headers**.
+
+Django REST framework is a powerful and flexible toolkit for building Web APIs, while Django CORS Headers is a Django app for handling the server headers required for Cross-Origin Resource Sharing (CORS).
