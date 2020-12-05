@@ -72,6 +72,8 @@ b. Using pipenv
     $ pipenv shell
     ``` 
     <br>
+
+---
 # Method 1: Separating Back-end and Front-end
 
 ## Setting up the Backend
@@ -268,7 +270,7 @@ The router class allows us to make the following queries:
 
 * /todos/ - This returns a list of all the Todo items (Create and Read operations can be done here).
 * /todos/id - this returns a single Todo item using the id primary key (Update and Delete operations can be done here).<br><br>
-
+---
 ## Setting up the Frontend
 
 ### 1. Create a new React application
