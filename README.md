@@ -33,10 +33,32 @@ Download Node.js and Node Package Manager (NPM) **[here](https://nodejs.org/en/)
 
 ### 2. Set up Virtual Environment
 
-a. Using venv
+a. Using venv (preferred)
 
-- To create virtual environment:
+- To **create** virtual environment:
     ```
     python3 -m venv venv
     ``` 
+- To **activate** virtual environment (Linux/Mac OS):
+    ```
+    source venv/bin/activate
+    ``` 
 
+b. Using pipenv
+
+- Install pipenv:
+    ```
+    pip install pipenv # Python 2
+    pip3 install pipenv # Python 3
+    ``` 
+- Enter virtual environment shell:
+    ```
+    pipenv shell
+    ``` 
+
+### 3. Install requirements
+Run the following command inside your virtual environment:
+```
+pip install -r requirements.txt # (Python 2)
+pip3 install -r requirements.txt # (Python 3)
+``` 
