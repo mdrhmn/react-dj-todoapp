@@ -19,7 +19,8 @@ There are mainly two ways you can deploy this kind of web app:
    ```Shell
     CODE FOR METHOD 2
     ``` 
-<br/>
+
+
 ## Technology Stack
 
 ### Front-end
@@ -39,7 +40,8 @@ There are mainly two ways you can deploy this kind of web app:
 * python-dotenv==0.15.0
 * psycopg2==2.8.6
 * psycopg2-binary==2.8.6
-<br/>
+
+
 ## Prerequisites
 
 ### 1. Install Node.js
@@ -498,7 +500,7 @@ Here is a outline following Heroku's from-product-to-productionized instructions
     django_heroku.settings(locals())
     ``` 
 
-<br/>
+
 ### 2. Configure the Django back-end side
 
 ### Database Configuration
