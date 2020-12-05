@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Modal from "./components/Modal";
 import axios from "axios";
 
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 class App extends Component {
 
 	constructor(props) {
@@ -25,7 +27,7 @@ class App extends Component {
 		axios
 			// .get("http://localhost:8000/api/todos/")
 			// Because of proxy in package.json, command be shorten as follows:
-			.get("/api/todos/")
+			.get("http://localhost:8000/api/todos/")
 			.then(res => this.setState({ todoList: res.data }))
 			.catch(err => console.log(err));
 	};
@@ -101,7 +103,7 @@ class App extends Component {
 			axios
 				// Because of proxy in package.json, command be shorten as follows:
 				// .put(`http://localhost:8000/api/todos/${item.id}/`, item)
-				.put(`http://localhost:8000/api/todos/${item.id}/`, item)
+				.put(`/api/todos/${item.id}/`, item)
 				.then(res => this.refreshList());
 			return;
 		}
@@ -116,7 +118,7 @@ class App extends Component {
 		axios
 			// Because of proxy in package.json, command be shorten as follows:
 			// .delete(`http://localhost:8000/api/todos/${item.id}`)
-			.delete(`http://localhost:8000/api/todos/${item.id}`)
+			.delete(`/api/todos/${item.id}/`)
 			.then(res => this.refreshList());
 	};
 
