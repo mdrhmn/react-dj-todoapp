@@ -813,7 +813,7 @@ $ git commit -m "blah blah blah"
 $ git push heroku master
 ``` 
 
-After the build is done and your app has been released, visit ```YOUR-APP-NAME.herokuapp.com```.<br>
+After the build is done and your app has been released, visit ```YOUR-APP-NAME.herokuapp.com```.<br><br>
 
 
 ### 7. Database Syncing
