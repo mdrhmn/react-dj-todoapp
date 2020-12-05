@@ -19,7 +19,7 @@ There are mainly two ways you can deploy this kind of web app:
    ```Shell
     CODE FOR METHOD 2
     ``` 
-
+    <br>
 
 ## Technology Stack
 
@@ -71,7 +71,7 @@ b. Using pipenv
     ```Shell
     $ pipenv shell
     ``` 
-
+    <br>
 # Method 1: Separating Back-end and Front-end
 
 ## Setting up the Backend
@@ -267,7 +267,7 @@ urlpatterns = [
 The router class allows us to make the following queries:
 
 * /todos/ - This returns a list of all the Todo items (Create and Read operations can be done here).
-* /todos/id - this returns a single Todo item using the id primary key (Update and Delete operations can be done here).
+* /todos/id - this returns a single Todo item using the id primary key (Update and Delete operations can be done here).<br>
 
 ## Setting up the Frontend
 
@@ -347,7 +347,7 @@ For this step, it is entirely up to you on how you are going to develop your Rea
 ### 4. Connecting Django with React using axios
 For us to make requests to the API endpoints on the Django back-end server, we will need install a JavaScript library called **axios**.
 
-**Axios** is a popular, promise-based HTTP client that sports an easy-to-use API and can be used in both the browser and Node.js.
+**axios** is a popular, promise-based HTTP client that sports an easy-to-use API and can be used in both the browser and Node.js.
 
 First, we need to install axios using NPM:
 
@@ -499,7 +499,7 @@ Here is a outline following Heroku's from-product-to-productionized instructions
     import django_heroku
     django_heroku.settings(locals())
     ``` 
-
+    <br>
 
 ### 2. Configure the Django back-end side
 
