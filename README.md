@@ -428,6 +428,7 @@ $ python manage.py runserver
 
 Test whether both the UI and API requests are working or not. <br><br>
 
+---
 ## Deploying the Web App using Heroku
 
 ### 1. Set up Heroku account and CLI
@@ -834,6 +835,7 @@ And if everything goes well up to this point, **congratulations!** You have succ
 
 If everything *did not go well*, you can use the ```$ heroku logs --tail``` to investigate any errors.<br>
 
+---
 # References
 
 1. https://www.digitalocean.com/community/tutorials/build-a-to-do-application-using-django-and-react
