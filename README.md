@@ -487,7 +487,7 @@ Here is a outline following Heroku's from-product-to-productionized instructions
 
 #### Database Configuration
 
-##### Create .env
+**i. Create .env**
 As mentioned above, the local version of the Django app is using db.sqlite3 as its database. However, when we visit the Heroku version, APP_NAME.herokuapp.com, Heroku will need to use a PostgreSQL database instead.
 
 What we want to do is to get our app running with SQLite whenever we’re working on it locally, and with Postgres whenever it’s in production. This can be done using the installed ```python-dotenv``` library.
@@ -504,7 +504,7 @@ Include the ```.env``` file inside our .gitignore when pushing to Heroku by runn
     $ echo '.env' >> .gitignore
 ``` 
 
-##### Update settings.py
+**ii. Update settings.py**
 
 First, import the necessary libraries for deployment purposes:
 
