@@ -770,6 +770,7 @@ axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 ```
 
+
 ### 5. Set up Heroku-specific files
 
 #### A. runtime.txt
@@ -814,6 +815,7 @@ $ git push heroku master
 
 After the build is done and your app has been released, visit ```YOUR-APP-NAME.herokuapp.com```.<br>
 
+
 ### 7. Database Syncing
 
 Upon successful deployment, one of the expected problems that may arise is the 500 Server Error or the following error:
@@ -830,6 +832,7 @@ $ heroku run python3 manage.py migrate --run-syncdb
 ``` 
 
 And if everything goes well up to this point, **congratulations!** You have successfully deployed your first React-Django web app!<br>
+
 
 ### 8. Debugging
 
