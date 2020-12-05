@@ -499,7 +499,6 @@ Here is a outline following Heroku's from-product-to-productionized instructions
     import django_heroku
     django_heroku.settings(locals())
     ``` 
-    <br>
 
 ### 2. Configure the Django back-end side
 
@@ -566,12 +565,98 @@ If you ran the Django application as specified above, you might get an error whe
 
 ```Python
 # backend/settings.py
-# Add these at the very last line of settings.py
 
 # This should already be in your settings.py
 django_heroku.settings(locals())
 
-# This is new
+# Add these at the very last line of settings.py
 options = DATABASES['default'].get('OPTIONS', {})
 options.pop('sslmode', None)
+``` 
+
+Test everything out by running the local Django server using ```python3 manage.py runserver```.<br>
+
+
+### Static files serve (WhiteNoise)
+
+#### A. WhiteNoise settings
+
+**[WhiteNoise](http://whitenoise.evans.io/en/stable/)** allows your web app to serve its own static files, making it a self-contained unit that can be deployed anywhere without relying on nginx, Amazon S3 or any other external service. (Especially useful on Heroku, OpenShift and other PaaS providers.)
+
+Since this is already installed from the ```requirements.txt``` file earlier on, we need to update ```settings.py```:
+
+
+```Python
+# backend/settings.py
+
+MIDDLEWARE = [
+  'django.middleware.security.SecurityMiddleware',
+  'whitenoise.middleware.WhiteNoiseMiddleware',
+  # ...
+]
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+``` 
+
+#### B. Static files and template settings
+
+In order to correctly serve the static files from both Django and React, we need to update the following in ```settings.py```:
+
+```Python
+# backend/settings.py
+
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'build/static')
+]
+   
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+``` 
+
+```STATIC_ROOT``` points to the directory containing all the static files, while ```STATICFILES_DIRS``` refers to other directories where Django will collect the static files as well. In this case, it is pointing to React's ```'build/static'``` directory which contains the static files for frontend when Heroku builds the React app using ```npm run build``` during deployment.
+
+
+Therefore, when Heroku runs ```python3 manage.py collectstatic``` during deployment, it will automatically compile all the static files from both React and Django.
+
+Meanwhile for Django's template directory, we need to include the React ```build``` directory which stores the ```index.html``` inside ```TEMPLATES``` as follows:
+
+```Python
+# backend/settings.py
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'build')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+``` 
+
+### Debug and Access
+
+During production, it is strongly recommended that ```DEBUG``` is set to ```False```. 
+
+For ```ALLOWED_HOSTS```, if you set ```CORS_ORIGIN_ALLOW_ALL``` to ```True```:
+
+```Python
+# backend/settings.py
+
+ALLOWED_HOSTS = ['*'] # Set to open for all access
+``` 
+
+Else, you need to specify the URL access permissions as follows:
+
+```Python
+# backend/settings.py
+
+ALLOWED_HOSTS = ['react-dj-todoapp.herokuapp.com', '127.0.0.1:8000', 'localhost']
 ``` 
