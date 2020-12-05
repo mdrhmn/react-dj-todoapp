@@ -502,7 +502,7 @@ Here is a outline following Heroku's from-product-to-productionized instructions
     import django_heroku
     django_heroku.settings(locals())
     ``` 
-    <br>
+<br>
 
 ### 2. Configure the Django back-end side
 
@@ -578,8 +578,7 @@ options = DATABASES['default'].get('OPTIONS', {})
 options.pop('sslmode', None)
 ``` 
 
-Test everything out by running the local Django server using ```python3 manage.py runserver```.<br><br>
-
+Test everything out by running the local Django server using ```python3 manage.py runserver```.
 
 ### Static files serve (WhiteNoise)
 
