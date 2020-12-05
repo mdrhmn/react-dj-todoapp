@@ -480,14 +480,32 @@ Here is a outline following Heroku's from-product-to-productionized instructions
     $ heroku config:set ALLOWED_HOSTS=APP_NAME.herokuapp.com
     $ heroku config:set SECRET_KEY=DJANGO_SECRET_KEY
     $ heroku config:set WEB_CONCURRENCY=1
+    ```
+
+9. Import ```django-heroku``` inside ```settings.py```
+
+    * ```django-heroku``` is a Django library for Heroku applications that ensures a seamless deployment and development experience.
+    * This library provides:
+        * Settings configuration (Static files / WhiteNoise)
+        * Logging configuration
+        * Test runner (important for Heroku CI)
+    * In settings.py, include the following at the very bottom:
+    ```Python
+    # backend/settings.py
+
+    # Configure Django App for Heroku.
+    import django_heroku
+    django_heroku.settings(locals())
     ``` 
+
   
 ### 2. Configure the Django back-end side
 
 
+
 ### Database Configuration
 
-#### Create .env
+#### A. Create .env
 As mentioned above, the local version of the Django app is using db.sqlite3 as its database. However, when we visit the Heroku version, APP_NAME.herokuapp.com, Heroku will need to use a PostgreSQL database instead.
 
 What we want to do is to get our app running with SQLite whenever we’re working on it locally, and with Postgres whenever it’s in production. This can be done using the installed ```python-dotenv``` library.
@@ -504,7 +522,7 @@ Include the ```.env``` file inside our .gitignore when pushing to Heroku by runn
     $ echo '.env' >> .gitignore
 ``` 
 
-#### Update settings.py
+#### B. Update settings.py
 
 First, import the necessary libraries for deployment purposes:
 
@@ -531,3 +549,29 @@ if os.path.isfile(dotenv_file):
 ``` 
 
 Since ```.env``` won’t exist on Heroku, ```dotenv.load_dotenv(dotenv_file)``` will never get called on Heroku and Heroku will proceed to try to find its own database — PostgreSQL.
+
+We also need to configure the ```DATABASES``` setting as shown below:
+
+```Python
+# backend/settings.py
+
+DATABASES = {}
+DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+
+``` 
+
+The idea here is to clear the ```DATABASES``` variable and then set the ```'default'``` key using the ```dj_database_url``` module. This module uses Heroku’s ```DATABASE_URL``` variable if it’s on Heroku, or it uses the ```DATABASE_URL``` we set in the ```.env``` file if we’re working locally.
+
+If you ran the Django application as specified above, you might get an error when working locally because the ```dj_database_url``` module wants to log in with SSL. Heroku Postgres requires SSL, but SQLite doesn’t need or expect it. Here's how to fix that:
+
+```Python
+# backend/settings.py
+# Add these at the very last line of settings.py
+
+# This should already be in your settings.py
+django_heroku.settings(locals())
+
+# This is new
+options = DATABASES['default'].get('OPTIONS', {})
+options.pop('sslmode', None)
+``` 
