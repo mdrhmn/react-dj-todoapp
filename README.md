@@ -497,8 +497,7 @@ Here is a outline following Heroku's from-product-to-productionized instructions
     import django_heroku
     django_heroku.settings(locals())
     ``` 
-
-  
+<br/><br/>
 ### 2. Configure the Django back-end side
 
 
