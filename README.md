@@ -20,8 +20,6 @@ There are mainly two ways you can deploy this kind of web app:
     CODE FOR METHOD 2
     ``` 
 
-# Method 1: Separating Back-end and Front-end
-
 ## Technology Stack
 
 ### Front-end
@@ -71,6 +69,8 @@ b. Using pipenv
     ```Shell
     $ pipenv shell
     ``` 
+    
+# Method 1: Separating Back-end and Front-end
 
 ## Setting up the Backend
 
