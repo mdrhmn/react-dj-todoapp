@@ -1,68 +1,31 @@
 import React, { Component } from "react";
 import Modal from "./components/Modal";
+import axios from "axios";
 
-const todoItems = [
-	{
-		id: 1,
-		title: "Go to Market",
-		description: "Buy ingredients to prepare dinner",
-		completed: true
-	},
-	{
-		id: 2,
-		title: "Study",
-		description: "Read Algebra and History textbook for upcoming test",
-		completed: false
-	},
-	{
-		id: 3,
-		title: "Sally's books",
-		description: "Go to library to rent sally's books",
-		completed: true
-	},
-	{
-		id: 4,
-		title: "Article",
-		description: "Write article on how to use django with react",
-		completed: false
-	}
-];
 class App extends Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			modal: false,
 			viewCompleted: false,
 			activeItem: {
 				title: "",
 				description: "",
 				completed: false
 			},
-			todoList: todoItems
+			todoList: []
 		};
 	}
 
-	toggle = () => {
-		this.setState({ modal: !this.state.modal });
-	};
+	componentDidMount() {
+		this.refreshList();
+	}
 
-	handleSubmit = item => {
-		this.toggle();
-		alert("save" + JSON.stringify(item));
-	};
-
-	handleDelete = item => {
-		alert("delete" + JSON.stringify(item));
-	};
-
-	createItem = () => {
-		const item = { title: "", description: "", completed: false };
-		this.setState({ activeItem: item, modal: !this.state.modal });
-	};
-
-	editItem = item => {
-		this.setState({ activeItem: item, modal: !this.state.modal });
+	refreshList = () => {
+		axios
+			.get("http://localhost:8000/api/todos/")
+			.then(res => this.setState({ todoList: res.data }))
+			.catch(err => console.log(err));
 	};
 
 	displayCompleted = status => {
@@ -80,17 +43,16 @@ class App extends Component {
 					className={this.state.viewCompleted ? "active" : ""}
 				>
 					Complete
-		  </span>
+            </span>
 				<span
 					onClick={() => this.displayCompleted(false)}
 					className={this.state.viewCompleted ? "" : "active"}
 				>
 					Incomplete
-		  </span>
+            </span>
 			</div>
 		);
 	};
-
 	renderItems = () => {
 		const { viewCompleted } = this.state;
 		const newItems = this.state.todoList.filter(
@@ -113,6 +75,7 @@ class App extends Component {
 						onClick={() => this.editItem(item)}
 						className="btn btn-secondary mr-2"
 					>
+
 						Edit
 					</button>
 					<button
@@ -125,6 +88,39 @@ class App extends Component {
 			</li>
 		));
 	};
+	
+	toggle = () => {
+		this.setState({ modal: !this.state.modal });
+	};
+
+	handleSubmit = item => {
+		this.toggle();
+		if (item.id) {
+			axios
+				.put(`http://localhost:8000/api/todos/${item.id}/`, item)
+				.then(res => this.refreshList());
+			return;
+		}
+		axios
+			.post("http://localhost:8000/api/todos/", item)
+			.then(res => this.refreshList());
+	};
+
+	handleDelete = item => {
+		axios
+			.delete(`http://localhost:8000/api/todos/${item.id}`)
+			.then(res => this.refreshList());
+	};
+
+	createItem = () => {
+		const item = { title: "", description: "", completed: false };
+		this.setState({ activeItem: item, modal: !this.state.modal });
+	};
+
+	editItem = item => {
+		this.setState({ activeItem: item, modal: !this.state.modal });
+	};
+
 	render() {
 		return (
 			<main className="content">
@@ -135,7 +131,7 @@ class App extends Component {
 							<div className="">
 								<button onClick={this.createItem} className="btn btn-primary">
 									Add task
-				  				</button>
+                    </button>
 							</div>
 							{this.renderTabList()}
 							<ul className="list-group list-group-flush">
