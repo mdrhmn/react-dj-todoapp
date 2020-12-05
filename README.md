@@ -798,3 +798,49 @@ Then, fill in the codes below:
 release: python manage.py migrate
 web: gunicorn backend.wsgi --log-file -
 ``` 
+
+### 6. Commit and Push
+
+Once all the previous steps are completed, we are ready to finally commit and push all changes:
+
+```Shell
+$ git add .
+$ git commit -m "blah blah blah"
+$ git push heroku master
+``` 
+
+After the build is done and your app has been released, visit ```YOUR-APP-NAME.herokuapp.com```.
+
+### 7. Database Syncing
+
+Upon successful deployment, one of the expected problems that may arise is the 500 Server Error or the following error:
+
+```
+ProgrammingError at /
+relation "TABLE_NAME" does not exist
+```
+
+This error can be resolved by running ```$ python3 manage.py migrate --run-syncdb``` using **Heroku run bash**:
+
+```Shell
+$ heroku run python3 manage.py migrate --run-syncdb
+``` 
+
+And if everything goes well up to this point, **congratulations!** You have successfully deployed your first React-Django web app!
+
+### 8. Debugging
+
+If everything *did not go well*, you can use the ```$ heroku logs --tail``` to investigate any errors.<br>
+
+## References
+
+1. https://www.digitalocean.com/community/tutorials/build-a-to-do-application-using-django-and-react
+2. https://dev.to/shakib609/deploy-your-django-react-js-app-to-heroku-2bck
+3. https://alphacoder.xyz/deploy-react-django-app-on-heroku/
+4. https://alphacoder.xyz/dead-simple-react-django-setup/
+5. https://blog.usejournal.com/deploying-django-to-heroku-connecting-heroku-postgres-fcc960d290d1
+6. https://blog.usejournal.com/serving-react-and-django-together-2089645046e4
+7. https://stackoverflow.com/questions/24351052/relation-does-not-exist-on-heroku
+8. https://stackoverflow.com/questions/53265543/sending-x-csrf-token-with-axios-request-django-reactjs
+9. https://www.techiediaries.com/django-cors/
+10. https://bezkoder.com/django-react-axios-rest-framework/
