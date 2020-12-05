@@ -144,10 +144,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Whitelist localhost:3000 because that's where frontend will be served
-CORS_ORIGIN_WHITELIST = [
-    'https://localhost:3000',
-]
+# # Whitelist localhost:3000 because that's where frontend will be served
+# CORS_ORIGIN_WHITELIST = [
+#     'https://localhost:3000',
+# ]
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())
