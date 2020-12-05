@@ -267,7 +267,7 @@ urlpatterns = [
 The router class allows us to make the following queries:
 
 * /todos/ - This returns a list of all the Todo items (Create and Read operations can be done here).
-* /todos/id - this returns a single Todo item using the id primary key (Update and Delete operations can be done here).<br>
+* /todos/id - this returns a single Todo item using the id primary key (Update and Delete operations can be done here).<br><br>
 
 ## Setting up the Frontend
 
