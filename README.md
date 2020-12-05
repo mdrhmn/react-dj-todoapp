@@ -103,7 +103,7 @@ Run the following command inside your virtual environment:
 $ django-admin startproject backend
 ``` 
 
-### 4. Extract all Django project files to parent directory (recommended)
+### 4. Extract all Django project files to root directory (recommended)
 The directory should look as follows:
 ```
 .
@@ -316,8 +316,8 @@ When everything is done, a new folder will be created with the following directo
         └── reportWebVitals.js
         └── setupTests.js
 ```
-### 2. Extract all React project files to parent directory (recommended)
-In order to make things much easier later in the process, you are advised to move all the files inside  ```frontend``` to the parent directory (same level as  ```backend/``` folder) as follows:
+### 2. Extract all React project files to root directory (recommended)
+In order to make things much easier later in the process, you are advised to move all the files inside  ```frontend``` to the root directory (same level as  ```backend/``` folder) as follows:
 
 ```Shell
 .
@@ -539,7 +539,7 @@ Next, we need to set up the **database** configuration:
 # backend/settings.py
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().root.root
 
 dotenv_file = os.path.join(BASE_DIR, ".env")
 if os.path.isfile(dotenv_file):
@@ -641,6 +641,48 @@ TEMPLATES = [
 ]
 ``` 
 
+#### C. Static files MIME Type issue
+
+Upon deploying the web app in Heroku, one of the common issues that occur is the static files failing to load due to MIME type limitations. The particular MIME type ("text/html") problem is related to your Django configuration.
+
+The ```views.py``` in your React frontend needs a ```content_type``` argument in the ```HttpResponse```.
+Heroku needs to know where the static files are.
+
+The "refused to execute script ... MIME type ('text/html')" problem stems from Django's default ```content_type``` setting for an ```HttpResponse```, which is ```text/html```.
+
+This can be fixed by including a ```content_type='application/javascript'``` argument in the return statement of a new class-based view called ```Assets(View)``` inside ```views.py``` like so:
+
+```Python
+# todo/views.py
+
+from django.shortcuts import render
+from rest_framework import viewsets
+from .serializers import TodoSerializer
+from .models import Todo
+from django.views import View
+from django.http import HttpResponse, HttpResponseNotFound
+import os
+
+# The viewsets base class provides the implementation for CRUD operations by default,
+# what we had to do was specify the serializer class and the query set.
+class TodoView(viewsets.ModelViewSet):
+    serializer_class = TodoSerializer
+    queryset = Todo.objects.all()
+
+# Add this CBV
+class Assets(View):
+
+    def get(self, _request, filename):
+        path = os.path.join(os.path.dirname(__file__), 'static', filename)
+
+        if os.path.isfile(path):
+            with open(path, 'rb') as file:
+                return HttpResponse(file.read(), content_type='application/javascript')
+        else:
+            return HttpResponseNotFound()
+
+``` 
+
 ### Debug and Access
 
 During production, it is strongly recommended that ```DEBUG``` is set to ```False```. 
@@ -659,4 +701,97 @@ Else, you need to specify the URL access permissions as follows:
 # backend/settings.py
 
 ALLOWED_HOSTS = ['react-dj-todoapp.herokuapp.com', '127.0.0.1:8000', 'localhost']
+``` 
+
+### 3. Configure the React front-end side
+
+#### A. Configure package.json
+
+For React deployment using Heroku, there are a few changes needed to be made inside the ```package.json```:
+
+```JSON
+// package.json
+
+// Add homepage and engine settings
+
+{   
+    "name": "frontend",
+    "homepage": ".",
+    "version": "0.1.0",
+    "private": true,
+    "proxy": "http://localhost:8000",
+    "dependencies": {
+        "axios": "^0.18.0",
+        "bootstrap": "^4.1.3",
+        "react": "^16.5.2",
+        "react-dom": "^16.5.2",
+        "react-scripts": "2.0.5",
+        "reactstrap": "^6.5.0"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject"
+    },
+    "engines": {
+        "node": "14.6.0",
+        "npm": "6.14.9"
+    },
+    [...]
+``` 
+The ```engines``` part refers to the preferred version of Node and NPM.
+
+#### B. Fix Django's CSRF token verification conflict
+
+The built in CSRF protection provided by Django is very useful to protect your server from malicious websites that can exploit your visitor browser to attack you. However, when using modern JavaScript libraries you will need to handle CSRF differently.
+
+Referring back to the first part of the ```README.md```, because React and Django apps use different URL and port number, Django's CSRF token verification mechanism will prevent React from executing any API requests to Django during production.
+
+To solve this, we need to use ```axios``` to handle CSRF tokens in React. For ```axios``` client you have **three** options:
+
+* Manually attach the CSRF token in the header of each Axios call
+* Use the ```Axios``` ```xsrfHeaderName``` for each call
+* Use a default ```xsrfHeaderName (axios.defaults.xsrfHeaderName = "X-CSRFToken")```
+
+Here is how you can simply use the CSRF token with Axios without any further configuration:
+
+```JavaScript
+// src/App.js
+
+import axios from 'axios';
+
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+``` 
+
+### 4. Set up Heroku-specific files
+
+#### A. runtime.txt
+
+Heroku will install a default Python version if you don't specify one, but if you want to pick your Python version, you'll need a ```runtime.txt``` file. 
+
+Create one in the root directory, next to your ```requirements.txt```, ```manage.py```, ```.gitignore``` and the rest. Specify your Python version with the prefix ```python-```, followed by the major, minor, and patch version that you want your application to run on:
+
+```Shell
+python-3.9.0
+``` 
+
+#### B. requirements.txt
+
+When deploying the web app, Heroku will need to install all the required dependencies for the web app to run by referring to the ```requirements.txt``` file. 
+
+To ensure that all dependencies are included, consider freezing your dependencies using the command ```$ pip freeze > requirements.txt```. This will make your build a little bit more predictable by locking your exact dependency versions into your Git repo. If your dependencies aren't locked, you might find yourself deploying one version of Django one day and a new one the next.
+
+#### C. Procfile
+
+Heroku apps include a Heroku-specific ```Procfile``` that specifies the processes our application should run. The processes specified in this file will automatically boot on deploy to Heroku. 
+
+Create a file named ```Procfile``` in the root level directory using ```$ touch Procfile``` command, right next to your ```requirements.txt``` and ```runtime.txt``` files. **(Make sure to capitalize the P of Procfile otherwise Heroku might not recognize it!)**:
+
+Then, fill in the codes below:
+
+```Shell
+release: python manage.py migrate
+web: gunicorn backend.wsgi --log-file -
 ``` 
