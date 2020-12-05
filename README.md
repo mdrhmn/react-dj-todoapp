@@ -766,7 +766,7 @@ import axios from 'axios';
 axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 ```
-<br><br>
+<br>
 
 ### 5. Set up Heroku-specific files
 
@@ -798,6 +798,7 @@ Then, fill in the codes below:
 release: python manage.py migrate
 web: gunicorn backend.wsgi --log-file -
 ``` 
+<br>
 
 ### 6. Commit and Push
 
@@ -809,7 +810,7 @@ $ git commit -m "blah blah blah"
 $ git push heroku master
 ``` 
 
-After the build is done and your app has been released, visit ```YOUR-APP-NAME.herokuapp.com```.
+After the build is done and your app has been released, visit ```YOUR-APP-NAME.herokuapp.com```.<br>
 
 ### 7. Database Syncing
 
@@ -826,7 +827,7 @@ This error can be resolved by running ```$ python3 manage.py migrate --run-syncd
 $ heroku run python3 manage.py migrate --run-syncdb
 ``` 
 
-And if everything goes well up to this point, **congratulations!** You have successfully deployed your first React-Django web app!
+And if everything goes well up to this point, **congratulations!** You have successfully deployed your first React-Django web app!<br>
 
 ### 8. Debugging
 
