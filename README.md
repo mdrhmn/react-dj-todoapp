@@ -31,4 +31,12 @@ off Django (including the Django REST Framework for API CRUD operations) and Rea
 ### 1. Install Node.js
 Download Node.js and Node Package Manager (NPM) **[here](https://nodejs.org/en/)**.
 
+### 2. Set up Virtual Environment
+
+a. Using venv
+
+- To create virtual environment:
+    ```
+    python3 -m venv venv
+    ``` 
 
