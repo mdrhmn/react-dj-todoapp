@@ -441,6 +441,7 @@ Here is a outline following Heroku's from-product-to-productionized instructions
 
 5. **Add** the **Heroku remote** via ```$ heroku git:remote -a your-heroku-app.```
 6. Configure the **Heroku buildpacks**
+    
     The React app build process depends on NPM, so we need Node.js. We also need Python to run Django.
 
     Heroku uses buildpacks to transform deployed code into slugs which can be executed by Dynos (server instances on Heroku). We’ll be needing two buildpacks. One for Node and another for Python.
