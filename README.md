@@ -75,12 +75,19 @@ $ mkdir (DIR_NAME)
 $ cd (DIR_NAME)
 ``` 
 
-### 2. Install requirements
+### 2. Install dependencies
 Run the following command inside your virtual environment:
-```Shell
-$ pip install -r requirements.txt # (Python 2)
-$ pip3 install -r requirements.txt # (Python 3)
-``` 
+
+- Using pipenv:
+    ```Shell
+    $ pipenv install -r requirements.txt # (Python 2)
+    $ pipenv3 install -r requirements.txt # (Python 3)
+    ``` 
+- Using venv:
+    ```Shell
+    $ pip install -r requirements.txt # (Python 2)
+    $ pip3 install -r requirements.txt # (Python 3)
+    ``` 
 
 ### 3. Create new Django project
 Run the following command inside your virtual environment:
@@ -103,3 +110,34 @@ The directory should look as follows:
 ├── db.sqlite3
 ├── manage.py
 ```
+
+### 5. Create new Django app
+First, navigate into the newly created backend folder. Then, start a new Django app. We will also run migrations and start up the server:
+```Shell
+$ cd backend
+$ python manage.py startapp todo
+$ python manage.py migrate
+$ python manage.py runserver
+``` 
+
+If everything works well, we should see an instance of a Django application running on this address — http://localhost:8000
+
+https://scotch-res.cloudinary.com/image/upload/v1542486456/ia8jlkozut4uxwatnqwp.png
+
+### 5. Register new Django app
+
+Open the backend/settings.py file and update the INSTALLED_APPS section as so:
+```Python
+# backend/settings.py
+
+# Application definition
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'todo' # add this
+]
+``` 
