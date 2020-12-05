@@ -30,7 +30,7 @@ if os.path.isfile(dotenv_file):
 SECRET_KEY = '8cbt66kg@!-3l2dgeaqmarjgy6wy0h+7(&+a^2*hd3olh6vj*b'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['react-dj-todoapp.herokuapp.com', '127.0.0.1:8000', 'localhost']
 
@@ -146,7 +146,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Whitelist localhost:3000 because that's where frontend will be served
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',
+    'https://localhost:3000',
 ]
 
 # Activate Django-Heroku.
