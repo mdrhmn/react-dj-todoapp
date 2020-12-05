@@ -424,7 +424,7 @@ $ npm start
 $ python manage.py runserver
 ``` 
 
-Test whether both the UI and API requests are working or not. 
+Test whether both the UI and API requests are working or not. <br><br>
 
 ## Deploying the Web App using Heroku
 
