@@ -342,7 +342,7 @@ In order to make things much easier later in the process, you are advised to mov
 ```
 
 ### 3. Develop your React application
-For this step, it is entirely up to you on how you are going to develop your React application
+For this step, it is entirely up to you on how you are going to develop your React application.
 
 ### 4. Connecting Django with React using axios
 For us to make requests to the API endpoints on the Django back-end server, we will need install a JavaScript library called **axios**.
@@ -442,7 +442,7 @@ Here is a outline following Heroku's from-product-to-productionized instructions
     
 
 5. **Add** the **Heroku remote** via ```$ heroku git:remote -a your-heroku-app.```
-6. Configure the **Heroku buildpacks**
+6. **Configure** the **Heroku buildpacks**
     
     * The React app build process depends on NPM, so we need Node.js. We also need Python to run Django.
 
@@ -460,7 +460,7 @@ Here is a outline following Heroku's from-product-to-productionized instructions
 
     ![alt text](https://alphacoder.xyz/images/dply-dj/buildpacks.png)
 
-7. Configure PostgreSQL Heroku addon
+7. Configure **PostgreSQL Heroku addon**
    
     * During production, Heroku will not be using SQLite database. Instead, we need to use PostgreSQL by    configuring the addon to our app using ```$ heroku addons:create heroku-postgresql:hobby-dev```
     * You can check whether this is successful by running ```$ heroku config```:
@@ -472,7 +472,7 @@ Here is a outline following Heroku's from-product-to-productionized instructions
     * The database info from the code snippet above refers to the URL containing your database’s location and access credentials all in one. Anyone with this URL can access your database, so be careful with it.
     * You’ll notice that Heroku saves it as an environment variable called ```DATABASE_URL``` . This URL can and does change, so you should never hard code it. Instead, we’ll use the variable ```DATABASE_URL``` in  Django.
 
-8. Configure Heroku config variables
+8. Configure **Heroku config variables**
 
     * According to Heroku, config vars are environment variables that can change the way your app behaves. In addition to creating your own, some add-ons come with their own.
     * There are several environment variables that need to be set:
@@ -682,7 +682,7 @@ class Assets(View):
             return HttpResponseNotFound()
 
 ```
-<br><br> 
+<br>
 
 ### 3. Debug and Access
 
@@ -703,7 +703,7 @@ Else, you need to specify the URL access permissions as follows:
 
 ALLOWED_HOSTS = ['react-dj-todoapp.herokuapp.com', '127.0.0.1:8000', 'localhost']
 ``` 
-<br><br>
+<br>
 
 ### 4. Configure the React front-end side
 
@@ -768,7 +768,7 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 ```
 <br><br>
 
-### 4. Set up Heroku-specific files
+### 5. Set up Heroku-specific files
 
 #### A. runtime.txt
 
