@@ -205,7 +205,7 @@ Whitelist means allowing a set of URLs to access the Django server. In this case
 
 If you want to allow all access to the Django server, ```CORS_ORIGIN_ALLOW_ALL``` should be set to True.
 
-### 6. Creating serializers for the Django model and views
+### 8. Creating serializers for the Django model and views
 
 We need serializers to c**onvert model instances to JSON** so that the frontend can work with the received data easily. We will create a ```todo/serializers.py``` file:
 
@@ -766,7 +766,6 @@ import axios from 'axios';
 axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 ```
-<br>
 
 ### 5. Set up Heroku-specific files
 
