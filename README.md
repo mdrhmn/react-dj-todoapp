@@ -73,6 +73,12 @@ b. Using pipenv
     ``` 
     <br>
 
+## Deployed Web Application
+
+Click **[here](https://react-dj-todoapp.herokuapp.com/)** to view the **deployed todo web application**!
+
+Click **[here](https://github.com/mdrhmn/react-dj-todoapp)** to visit the **GitHub repository**.
+
 ---
 # Method 1: Separating Back-end and Front-end
 
