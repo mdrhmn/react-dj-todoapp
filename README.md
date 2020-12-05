@@ -426,21 +426,28 @@ Test whether both the UI and API requests are working or not.
 
 ## Deploying the Web App using Heroku
 
-Here is a outline following Heroku's from-product-to-productionized instructions for a Django deployment to Heroku:
-
-1. Signup for **[Heroku](https://signup.heroku.com/)** if you don't have an existing account
-2. Install the **[Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli#download-and-install)**. For MacOS:
-    ```Shell
-    $ brew tap heroku/brew && brew install heroku 
-    ``` 
-3. Log in to your Heroku account and enter your credentials:
-    ```Shell
-    $ heroku login
-    ``` 
 ### 1. Set up Heroku account and CLI
 
-If you
+Here is a outline following Heroku's from-product-to-productionized instructions for a Django deployment to Heroku:
 
+1. **Signup** for **[Heroku](https://signup.heroku.com/)** if you don't have an existing account
+2. **Install** the **[Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli#download-and-install)**. For MacOS, use ```$ brew tap heroku/brew && brew install heroku```:
+3. **Log in** to your Heroku account by entering your credentials using ```$ heroku login```:
+4. **Create** a n**ew Heroku app** either via Heroku CLI (```$ heroku create APP_NAME```) or directly in the **[Heroku dashboard](https://dashboard.heroku.com)**:
+
+    ![alt text](https://alphacoder.xyz/images/dply-dj/heroku-dashboard.png)
+    ![alt text](https://alphacoder.xyz/images/dply-dj/link-app-to-heroku.png)
+    
+
+5. **Add** the **Heroku remote** via ```$ heroku git:remote -a your-heroku-app.```
+6. Configure the **Heroku buildpacks**
+    The React app build process depends on NPM, so we need Node.js. We also need Python to run Django.
+
+    Heroku uses buildpacks to transform deployed code into slugs which can be executed by Dynos (server instances on Heroku). We’ll be needing two buildpacks. One for Node and another for Python.
+
+    Our app would run on a Python server, even though we’ll use Node/NPM to build/bundle the React frontend. So the Python buildpack will be the main one in our config. The main buildpack determines the process type of the Heroku app. You can read about multiple buildpacks to understand how they work.
+
+    You can add buildpacks via the Heroku CLI. Head back to your terminal and run the following to set/add the buildpacks we need.
 ### 2. Configure the Django side
 
 #### settings.py
@@ -459,7 +466,6 @@ Next, we need to set up the **database** configuration:
 
 ```Python
 # backend/settings.py
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
