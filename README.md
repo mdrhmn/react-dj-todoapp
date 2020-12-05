@@ -69,7 +69,7 @@ b. Using pipenv
     ```Shell
     $ pipenv shell
     ``` 
-    
+
 # Method 1: Separating Back-end and Front-end
 
 ## Setting up the Backend
@@ -116,7 +116,6 @@ The directory should look as follows:
 ├── db.sqlite3
 ├── manage.py
 ```
-
 ### 5. Create new Django app
 First, navigate into the newly created backend folder. Then, start a new Django app, in this case called todo since we want to create a todo app. We will also run migrations and start up the server:
 ```Shell
@@ -129,7 +128,7 @@ $ python manage.py runserver
 If everything works well, we should see an instance of a Django application running on this address — http://localhost:8000
 
 ![alt text](https://scotch-res.cloudinary.com/image/upload/v1542486456/ia8jlkozut4uxwatnqwp.png)
-### 5. Register new Django app
+### 6. Register new Django app
 
 Open the backend/settings.py file and update the INSTALLED_APPS section as so:
 ```Python
@@ -147,7 +146,7 @@ INSTALLED_APPS = [
 ]
 ``` 
 
-### 5. Set up the APIs
+### 7. Set up the APIs
 
 In order to allow for API CRUD operations between both front and back end, we need to utilise the **Django REST Framework** as well as **Django CORS Headers**.
 
@@ -258,8 +257,8 @@ router = routers.DefaultRouter()                        # add this
 router.register(r'todos', views.TodoView, 'todo')       # add this
 
 urlpatterns = [
-    path('admin/', admin.site.urls),         p
-    ath('api/', include(router.urls))                   # add this
+    path('admin/', admin.site.urls),         
+    path('api/', include(router.urls))                   # add this
 ]
 ```
 
@@ -267,3 +266,123 @@ The router class allows us to make the following queries:
 
 * /todos/ - This returns a list of all the Todo items (Create and Read operations can be done here).
 * /todos/id - this returns a single Todo item using the id primary key (Update and Delete operations can be done here).
+
+## Setting up the Frontend
+
+### 1. Create a new React application
+
+Once Node.js is installed,  you can quick start creating your first React app by using the following commands:
+
+```Shell
+$ npx create-react-app frontend
+$ cd my-app
+$ npm start
+``` 
+
+In this case, the app we are creating is called front-end to compliment the Django's 'backend' project name. This will take a few minutes to complete.
+
+When everything is done, a new folder will be created with the following directory tree:
+
+```Shell
+.
+├── README.md
+├── backend
+│   ├── __init__.py
+│   ├── __pycache__
+│   ├── asgi.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── db.sqlite3
+├── manage.py
+└── frontend
+    ├── README.md
+    ├── node_modules
+    ├── package.json
+    ├── .gitignore
+    ├── public
+    │   ├── favicon.ico
+    │   ├── index.html
+    │   └── manifest.json
+    └── src
+        ├── App.css
+        ├── App.js
+        ├── App.test.js
+        ├── index.css
+        ├── index.js
+        ├── logo.svg
+        └── reportWebVitals.js
+        └── setupTests.js
+```
+### 2. Extract all React project files to parent directory (recommended)
+In order to make things much easier later in the process, you are advised to move all the files inside  ```frontend``` to the parent directory (same level as  ```backend/``` folder) as follows:
+
+```Shell
+.
+├── README.md
+├── backend
+│   ├── __init__.py
+│   ├── __pycache__
+│   ├── asgi.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── db.sqlite3
+├── manage.py
+├── node_modules
+├── package-lock.json
+├── package.json
+├── public
+├── requirements.txt
+├── runtime.txt
+├── src
+└── todo
+```
+
+### 3. Develop your React application
+For this step, it is entirely up to you on how you are going to develop your React application
+
+### 4. Connecting Django with React using axios
+For us to make requests to the API endpoints on the Django back-end server, we will need install a JavaScript library called **axios**.
+
+**Axios** is a popular, promise-based HTTP client that sports an easy-to-use API and can be used in both the browser and Node.js.
+
+First, we need to install axios using NPM:
+
+```Shell
+$ npm install axios
+```
+
+Once ```axios``` is successfully installed, head over to the ```package.json``` file and add a **proxy** like so:
+
+```JSON
+// package.json
+
+[...]       
+"name": "frontend",
+"version": "0.1.0",
+"private": true,
+"proxy": "http://localhost:8000",
+"dependencies": {
+    "axios": "^0.18.0",
+    "bootstrap": "^4.1.3",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "react-scripts": "2.0.5",
+    "reactstrap": "^6.5.0"
+},
+[...]
+```
+
+The proxy will help in tunnelling API requests to http://localhost:8000 where the Django application will handle them, so we can simplify writing the requests like this in React:
+
+```JavaScript
+axios.get("/api/todos/")
+```
+Instead of this:
+
+```JavaScript
+axios.get("http://localhost:8000/api/todos/")
+```
+
+After that, you need to modify the React codes (```App.js ```)
