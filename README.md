@@ -502,6 +502,7 @@ Here is a outline following Heroku's from-product-to-productionized instructions
     import django_heroku
     django_heroku.settings(locals())
     ``` 
+    <br>
 
 ### 2. Configure the Django back-end side
 
@@ -769,7 +770,7 @@ import axios from 'axios';
 axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 ```
-
+<br>
 
 ### 5. Set up Heroku-specific files
 
