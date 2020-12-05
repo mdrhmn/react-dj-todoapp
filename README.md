@@ -386,3 +386,89 @@ axios.get("http://localhost:8000/api/todos/")
 ```
 
 After that, you need to modify the React codes (```App.js ```)
+
+Here's a snippet on how to use axios:
+
+```JavaScript
+// src/App.js
+
+handleSubmit = item => {
+    this.toggle();
+    if (item.id) {
+    axios
+        .put(`http://localhost:8000/api/todos/${item.id}/`, item)
+        .then(res => this.refreshList());
+    return;
+    }
+    axios
+      .post("http://localhost:8000/api/todos/", item)
+      .then(res => this.refreshList());
+};
+
+handleDelete = item => {
+    axios
+        .delete(`http://localhost:8000/api/todos/${item.id}`)
+        .then(res => this.refreshList());
+};
+```
+
+For further information and example, please refer to this **[Digital Ocean guide](https://www.digitalocean.com/community/tutorials/react-axios-react)**. 
+
+### 5. Test the Web Application
+You can check whether everything is working by running both React and Django concurrently at your local development server:
+
+```Shell
+$ npm start
+$ python manage.py runserver
+``` 
+
+Test whether both the UI and API requests are working or not. 
+
+## Deploying the Web App using Heroku
+
+Here is a outline following Heroku's from-product-to-productionized instructions for a Django deployment to Heroku:
+
+1. Signup for **[Heroku](https://signup.heroku.com/)** if you don't have an existing account
+2. Install the **[Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli#download-and-install)**. For MacOS:
+    ```Shell
+    $ brew tap heroku/brew && brew install heroku 
+    ``` 
+3. Log in to your Heroku account and enter your credentials:
+    ```Shell
+    $ heroku login
+    ``` 
+### 1. Set up Heroku account and CLI
+
+If you
+
+### 2. Configure the Django side
+
+#### settings.py
+
+First, import the necessary libraries for deployment purposes:
+
+```Python
+# backend/settings.py
+
+import django_heroku
+import dotenv
+import dj_database_url
+``` 
+
+Next, we need to set up the **database** configuration:
+
+```Python
+# backend/settings.py
+
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+dotenv_file = os.path.join(BASE_DIR, ".env")
+if os.path.isfile(dotenv_file):
+    dotenv.load_dotenv(dotenv_file)
+
+
+
+``` 
+
