@@ -7,19 +7,15 @@ This is a simple Todo web application built using React.js (front-end) and Djang
 There are mainly two ways you can deploy this kind of web app:
 
 1. **Separating Back-end and Front-end:**
-   In this method, you server your back-end and front-end apps separately and they connect to each other with their respective URIs. One major overead of this approach is you have to configure CORS yourself. If you don't know about CORS you can learn more here.
+   In this method, you server your back-end and front-end apps separately and they connect to each other with their respective URIs. One major overead of this approach is you have to **configure CORS yourself**. If you don't know about CORS you can learn more here.
 
    In this project, we will be demonstrating this longer, more complex but more flexible approach.
 
 2. **Serving from the same host:**
    In this method you will be serving the app from the same URI so it removes the CORS overhead. Also, it makes it easier to maintain smaller-medium sized apps. You don't want to create two separate repositories for some simple sites like a blog, to-do etc.
 
-   This method requires building the React app first (npm run build) and update both the Django views (views.py) and urls (urls.py) to render the index.html template directly:
+   This method requires building the React app first (npm run build) and update both the Django views (views.py) and urls (urls.py) to render the index.html template directly. I will try out this second, easier method in the future.<br>
 
-   ```Shell
-    CODE FOR METHOD 2
-    ``` 
-    <br>
 
 ## Technology Stack
 
@@ -79,6 +75,7 @@ Click **[here](https://react-dj-todoapp.herokuapp.com/)** to view the **deployed
 
 Click **[here](https://github.com/mdrhmn/react-dj-todoapp)** to visit the **GitHub repository**.
 
+
 ---
 # Method 1: Separating Back-end and Front-end
 
@@ -94,12 +91,12 @@ $ cd (DIR_NAME)
 ### 2. Install dependencies
 Run the following command inside your virtual environment:
 
-- Using pipenv:
+- Using **pipenv**:
     ```Shell
     $ pipenv install -r requirements.txt # (Python 2)
     $ pipenv3 install -r requirements.txt # (Python 3)
     ``` 
-- Using venv:
+- Using **venv**:
     ```Shell
     $ pip install -r requirements.txt # (Python 2)
     $ pip3 install -r requirements.txt # (Python 3)
@@ -127,7 +124,8 @@ The directory should look as follows:
 ├── manage.py
 ```
 ### 5. Create new Django app
-First, navigate into the newly created backend folder. Then, start a new Django app, in this case called todo since we want to create a todo app. We will also run migrations and start up the server:
+First, **navigate** into the newly created backend folder. Then, **start a new Django app**, in this case called ```todo``` since we want to create a todo app. We will also **run migrations** and **start up the server**:
+
 ```Shell
 $ cd backend
 $ python manage.py startapp todo
@@ -138,9 +136,11 @@ $ python manage.py runserver
 If everything works well, we should see an instance of a Django application running on this address — http://localhost:8000
 
 ![alt text](https://scotch-res.cloudinary.com/image/upload/v1542486456/ia8jlkozut4uxwatnqwp.png)
+
 ### 6. Register new Django app
 
-Open the backend/settings.py file and update the INSTALLED_APPS section as so:
+Open the ```backend/settings.py``` file and update the ```INSTALLED_APPS``` section as so:
+
 ```Python
 # backend/settings.py
 
@@ -158,9 +158,9 @@ INSTALLED_APPS = [
 
 ### 7. Set up the APIs
 
-In order to allow for API CRUD operations between both front and back end, we need to utilise the **Django REST Framework** as well as **Django CORS Headers**.
+In order to allow for **API CRUD operations** between both front and back end, we need to utilise the **Django REST Framework** as well as **Django CORS Headers**.
 
-**Django REST framework** is a powerful and flexible toolkit for building Web APIs, while **Django CORS Headers** is a Django app for handling the server headers required for Cross-Origin Resource Sharing (CORS).
+**Django REST framework** is a powerful and flexible toolkit for building Web APIs, while **Django CORS Headers** is a Django app for handling the server headers required for **Cross-Origin Resource Sharing (CORS)**.
 
 The image below essentially sums up the application architecture of a React-Django stack web app:
 ![alt text](https://bezkoder.com/wp-content/uploads/2020/03/django-react-axios-rest-framework-crud-architecture.png)
@@ -168,7 +168,8 @@ The image below essentially sums up the application architecture of a React-Djan
 * Django exports REST APIs using Django REST Framework and interacts with Database using Django Model.
 * React Client sends HTTP Requests and retrieve HTTP Responses using axios, shows data on the components.
 
-After installing all the necessary requirements in Step 2, we need to add rest_framework and corsheaders to the list of installed applications, so open the backend/settings.py file and update the INSTALLED_APPS and MIDDLEWARE sections accordingly:
+
+After installing all the necessary requirements in Step 2, we need to add ```rest_framework``` and ```corsheaders``` to the list of installed applications, so open the ```backend/settings.py``` file and update the ```INSTALLED_APPS``` and ```MIDDLEWARE``` sections accordingly:
 
 ```Python
 # backend/settings.py
@@ -181,8 +182,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'corsheaders',            # add this
-    'rest_framework',         # add this
+    'corsheaders',                              # add this
+    'rest_framework',                           # add this
     'todo',
   ]
 
@@ -202,20 +203,22 @@ At the bottom of the ```backend/settings.py``` file, you need to choose to add e
 
 ```Python
 # # Whitelist localhost:3000 because that's where frontend will be served
-# CORS_ORIGIN_WHITELIST = [
-#     'https://localhost:3000',
-# ]
 
+# Option 1
+CORS_ORIGIN_WHITELIST = [
+    'https://localhost:3000',
+]
+
+# Option 2
 CORS_ORIGIN_ALLOW_ALL = True
 ``` 
 
-Whitelist means allowing a set of URLs to access the Django server. In this case, localhost:3000 needs to be whitelisted because that's where frontend will be served.
-
-If you want to allow all access to the Django server, ```CORS_ORIGIN_ALLOW_ALL``` should be set to True.
+* ```CORS_ORIGIN_ALLOW_ALL```: If True, all origins will be accepted (not use the whitelist below). **Defaults to False**.
+* ```CORS_ORIGIN_WHITELIST```: List of origins that are authorized to make cross-site HTTP requests. **Defaults to []**.
 
 ### 8. Creating serializers for the Django model and views
 
-We need serializers to c**onvert model instances to JSON** so that the frontend can work with the received data easily. We will create a ```todo/serializers.py``` file:
+We need serializers to **convert model instances to JSON** so that the frontend can work with the received data easily. We will create a ```todo/serializers.py``` file:
 
 ```Shell
 touch todo/serializers.py
@@ -234,7 +237,7 @@ class TodoSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'description', 'completed')
 ```
 
-For any type of Django app, you can configure its own model as long as serializers are imported and  ```serializers.ModelSerializer``` model class parameter is defined
+For any type of Django app, you can configure its own model as long as serializers are imported and  ```serializers.ModelSerializer``` model class parameter is defined.
 
 For the views in ```todo/views.py```:
 
@@ -253,7 +256,7 @@ class TodoView(viewsets.ModelViewSet):       # add this
 
 The **viewsets base class** provides the implementation for CRUD operations by default, what we had to do was specify the serializer class and the query set.
 
-Finally, we need to update the ```backend/urls.py```:
+Finally, we need to **update** the ```backend/urls.py```:
 
 ```Python
 # backend/urls.py
@@ -274,14 +277,15 @@ urlpatterns = [
 
 The router class allows us to make the following queries:
 
-* /todos/ - This returns a list of all the Todo items (Create and Read operations can be done here).
-* /todos/id - this returns a single Todo item using the id primary key (Update and Delete operations can be done here).<br><br>
+* ```/todos/``` - This returns a **list of all the Todo items** (Create and Read operations can be done here).
+* ```/todos/id``` - this returns a **single Todo item** using the ```id``` primary key (Update and Delete operations can be done here).<br><br>
+
 ---
 ## Setting up the Frontend
 
 ### 1. Create a new React application
 
-Once Node.js is installed,  you can quick start creating your first React app by using the following commands:
+Once Node.js is installed,  you can quick start **creating your first React app** by using the following commands:
 
 ```Shell
 $ npx create-react-app frontend
@@ -289,9 +293,9 @@ $ cd my-app
 $ npm start
 ``` 
 
-In this case, the app we are creating is called front-end to compliment the Django's 'backend' project name. This will take a few minutes to complete.
+In this case, the app we are creating is called ```frontend``` to compliment the Django's ```backend``` project name. This will take a few minutes to complete.
 
-When everything is done, a new folder will be created with the following directory tree:
+When everything is done, a **new folder will be created** with the following directory tree:
 
 ```Shell
 .
@@ -325,7 +329,7 @@ When everything is done, a new folder will be created with the following directo
         └── setupTests.js
 ```
 ### 2. Extract all React project files to root directory (recommended)
-In order to make things much easier later in the process, you are advised to move all the files inside  ```frontend``` to the root directory (same level as  ```backend/``` folder) as follows:
+In order to make things much easier later in the process, you are **advised** to **move all the files** inside  ```frontend``` to the **root directory** (same level as  ```backend/``` folder) as follows:
 
 ```Shell
 .
@@ -350,14 +354,15 @@ In order to make things much easier later in the process, you are advised to mov
 ```
 
 ### 3. Develop your React application
-For this step, it is entirely up to you on how you are going to develop your React application.
+For this step, it is entirely up to you on how you are going to develop your React application. You can **refer to the React codes included** inside my **GitHub repository** (```react-dj-todoapp```) as reference.
 
 ### 4. Connecting Django with React using axios
-For us to make requests to the API endpoints on the Django back-end server, we will need install a JavaScript library called **axios**.
+For us to make requests to the API endpoints on the Django back-end server, we will need install a JavaScript library called ```axios```.
 
-**axios** is a popular, promise-based HTTP client that sports an easy-to-use API and can be used in both the browser and Node.js.
+```axios``` is a popular, promise-based HTTP client that sports an easy-to-use API and can be used in both the browser and Node.js. For more information regarding ```axios```, you can read them **[here](https://www.digitalocean.com/community/tutorials/react-axios-react)**.
 
-First, we need to install axios using NPM:
+
+First, we need to install ```axios``` using NPM:
 
 ```Shell
 $ npm install axios
@@ -384,7 +389,7 @@ Once ```axios``` is successfully installed, head over to the ```package.json``` 
 [...]
 ```
 
-The proxy will help in tunnelling API requests to http://localhost:8000 where the Django application will handle them, so we can simplify writing the requests like this in React:
+The proxy will help in **tunnelling API requests** to http://localhost:8000 where the Django application will handle them, so we can simplify writing the requests like this in React:
 
 ```JavaScript
 axios.get("/api/todos/")
@@ -395,9 +400,9 @@ Instead of this:
 axios.get("http://localhost:8000/api/todos/")
 ```
 
-After that, you need to modify the React codes (```App.js ```)
+After that, you need to **modify the React codes** (```App.js ```)
 
-Here's a snippet on how to use axios:
+Here's a snippet on how to use ```axios```:
 
 ```JavaScript
 // src/App.js
@@ -425,7 +430,7 @@ handleDelete = item => {
 For further information and example, please refer to this **[Digital Ocean guide](https://www.digitalocean.com/community/tutorials/react-axios-react)**. 
 
 ### 5. Test the Web Application
-You can check whether everything is working by running both React and Django concurrently at your local development server:
+You can check whether everything is working by **running both React and Django concurrently** at your local development server:
 
 ```Shell
 $ npm start
@@ -439,7 +444,7 @@ Test whether both the UI and API requests are working or not. <br><br>
 
 ### 1. Set up Heroku account and CLI
 
-Here is a outline following Heroku's from-product-to-productionized instructions for a Django deployment to Heroku:
+Here is an **outline** following Heroku's from-product-to-productionized instructions for a Django deployment to Heroku:
 
 1. **Signup** for **[Heroku](https://signup.heroku.com/)** if you don't have an existing account
 2. **Install** the **[Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli#download-and-install)**. For MacOS, use ```$ brew tap heroku/brew && brew install heroku```:
@@ -455,9 +460,9 @@ Here is a outline following Heroku's from-product-to-productionized instructions
     
     * The React app build process depends on NPM, so we need Node.js. We also need Python to run Django.
 
-    * Heroku uses buildpacks to transform deployed code into slugs which can be executed by Dynos (server instances on Heroku). We’ll be needing two buildpacks. One for Node and another for Python.
+    * Heroku uses **buildpacks** to **transform deployed code into slugs** which can be executed by Dynos (server instances on Heroku). We’ll be needing two buildpacks. One for Node and another for Python.
 
-    * Our app would run on a Python server, even though we’ll use Node/NPM to build/bundle the React frontend. So the Python buildpack will be the main one in our config. The main buildpack determines the process type of the Heroku app. You can read about multiple buildpacks to understand how they work.
+    * Our app would run on a Python server, even though we will use Node/NPM to build/bundle the React frontend. So the Python buildpack will be the main one in our config. The main buildpack determines the process type of the Heroku app. You can read about multiple buildpacks to understand how they work.
 
     * You can add buildpacks via the Heroku CLI. Head back to your terminal and run the following to set/add the buildpacks we need:
 
@@ -465,25 +470,27 @@ Here is a outline following Heroku's from-product-to-productionized instructions
     $ heroku buildpacks:add --index 1 heroku/nodejs
     $ heroku buildpacks:add --index 2 heroku/python
     ``` 
-    * Note that the buildpacks **must be added in that order**. We can see the buildpacks we’ve added by running ```$ heroku buildpacks```. The last buildpack on the list determines the process type of the app.
+    
+    * Note that the buildpacks **must be added in that order**. We can see the buildpacks we’ve added by running ```$ heroku buildpacks```. The **last buildpack** on the list **determines the process type** of the app.
 
     ![alt text](https://alphacoder.xyz/images/dply-dj/buildpacks.png)
 
 7. Configure **PostgreSQL Heroku addon**
    
-    * During production, Heroku will not be using SQLite database. Instead, we need to use PostgreSQL by    configuring the addon to our app using ```$ heroku addons:create heroku-postgresql:hobby-dev```
+    * During production, Heroku will **not be using SQLite database**. Instead, we need to use **PostgreSQL** by configuring the addon to our app using ```$ heroku addons:create heroku-postgresql:hobby-dev```
     * You can check whether this is successful by running ```$ heroku config```:
     
      ```Shell
     $ === APP_NAME Config Vars
     DATABASE_URL: postgres://[DATABASE_INFO_HERE]
     ``` 
+
     * The database info from the code snippet above refers to the URL containing your database’s location and access credentials all in one. Anyone with this URL can access your database, so be careful with it.
-    * You’ll notice that Heroku saves it as an environment variable called ```DATABASE_URL``` . This URL can and does change, so you should never hard code it. Instead, we’ll use the variable ```DATABASE_URL``` in  Django.
+    * You will notice that Heroku saves it as an **environment variable** called ```DATABASE_URL``` . This URL can and does change, so you should never hard code it. Instead, we’ll use the variable ```DATABASE_URL``` in  Django.
 
 8. Configure **Heroku config variables**
 
-    * According to Heroku, config vars are environment variables that can change the way your app behaves. In addition to creating your own, some add-ons come with their own.
+    * According to Heroku, **config variables** are environment variables that can change the way your app behaves. In addition to creating your own, some add-ons come with their own.
     * There are several environment variables that need to be set:
 
     ```Shell
@@ -495,12 +502,13 @@ Here is a outline following Heroku's from-product-to-productionized instructions
 
 9. Import ```django-heroku``` inside ```settings.py```
 
-    * ```django-heroku``` is a Django library for Heroku applications that ensures a seamless deployment and development experience.
+    * ```django-heroku``` is a **Django library** for Heroku applications that ensures a more seamless deployment and development experience.
     * This library provides:
-        * Settings configuration (Static files / WhiteNoise)
-        * Logging configuration
-        * Test runner (important for Heroku CI)
-    * In settings.py, include the following at the very bottom:
+        * **Settings configuration** (Static files / WhiteNoise)
+        * **Logging configuration**
+        * **Test runner** (important for Heroku CI)
+    * In ```settings.py```, include the following at the very bottom:
+  
     ```Python
     # backend/settings.py
 
@@ -515,7 +523,7 @@ Here is a outline following Heroku's from-product-to-productionized instructions
 ### Database Configuration
 
 #### A. Create .env
-As mentioned above, the local version of the Django app is using db.sqlite3 as its database. However, when we visit the Heroku version, APP_NAME.herokuapp.com, Heroku will need to use a PostgreSQL database instead.
+As mentioned above, the local version of the Django app is using db.sqlite3 as its database. However, when we visit the Heroku version, ```APP_NAME.herokuapp.com```, Heroku will need to use a PostgreSQL database instead.
 
 What we want to do is to get our app running with SQLite whenever we’re working on it locally, and with Postgres whenever it’s in production. This can be done using the installed ```python-dotenv``` library.
 
@@ -533,7 +541,7 @@ Include the ```.env``` file inside our .gitignore when pushing to Heroku by runn
 
 #### B. Update settings.py
 
-First, import the necessary libraries for deployment purposes:
+First, **import** the necessary libraries for deployment purposes:
 
 ```Python
 # backend/settings.py
@@ -590,7 +598,7 @@ Test everything out by running the local Django server using ```python3 manage.p
 
 #### A. WhiteNoise settings
 
-**[WhiteNoise](http://whitenoise.evans.io/en/stable/)** allows your web app to serve its own static files, making it a self-contained unit that can be deployed anywhere without relying on nginx, Amazon S3 or any other external service. (Especially useful on Heroku, OpenShift and other PaaS providers.)
+**[WhiteNoise](http://whitenoise.evans.io/en/stable/)** allows your web app to **serve its own static files**, making it a self-contained unit that can be deployed anywhere without relying on nginx, Amazon S3 or any other external service. (Especially useful on Heroku, OpenShift and other PaaS providers.)
 
 Since this is already installed from the ```requirements.txt``` file earlier on, we need to update ```settings.py```:
 
@@ -609,7 +617,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 #### B. Static files and template settings
 
-In order to correctly serve the static files from both Django and React, we need to update the following in ```settings.py```:
+In order to correctly serve the static files from both Django and React, we need to **update** the following in ```settings.py```:
 
 ```Python
 # backend/settings.py
@@ -624,7 +632,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 ``` 
 
 ```STATIC_ROOT``` points to the directory containing all the static files, while ```STATICFILES_DIRS``` refers to other directories where Django will collect the static files as well. In this case, it is pointing to React's ```'build/static'``` directory which contains the static files for frontend when Heroku builds the React app using ```npm run build``` during deployment.
-
 
 Therefore, when Heroku runs ```python3 manage.py collectstatic``` during deployment, it will automatically compile all the static files from both React and Django.
 
@@ -652,7 +659,7 @@ TEMPLATES = [
 
 #### C. Static files MIME Type issue
 
-Upon deploying the web app in Heroku, one of the common issues that occur is the static files failing to load due to MIME type limitations. The particular MIME type ("text/html") problem is related to your Django configuration.
+Upon deploying the web app in Heroku, one of the common issues that occur is the **static files failing to load due to MIME type limitations**. The particular MIME type (```text/html```) problem is related to your Django configuration.
 
 The ```views.py``` in your React frontend needs a ```content_type``` argument in the ```HttpResponse```.
 Heroku needs to know where the static files are.
@@ -755,11 +762,11 @@ The ```engines``` part refers to the preferred version of Node and NPM.
 
 #### B. Fix Django's CSRF token verification conflict
 
-The built in CSRF protection provided by Django is very useful to protect your server from malicious websites that can exploit your visitor browser to attack you. However, when using modern JavaScript libraries you will need to handle CSRF differently.
+The **built-in CSRF protection** provided by Django is very useful to **protect your server from malicious websites** that can exploit your visitor browser to attack you. However, when using modern JavaScript libraries you will need to handle CSRF differently.
 
 Referring back to the first part of the ```README.md```, because React and Django apps use different URL and port number, Django's CSRF token verification mechanism will prevent React from executing any API requests to Django during production.
 
-To solve this, we need to use ```axios``` to handle CSRF tokens in React. For ```axios``` client you have **three** options:
+To solve this, we need to tell ```axios``` to handle CSRF tokens in React. For ```axios``` client you have **three** options:
 
 * Manually attach the CSRF token in the header of each Axios call
 * Use the ```Axios``` ```xsrfHeaderName``` for each call
@@ -783,7 +790,7 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
 Heroku will install a default Python version if you don't specify one, but if you want to pick your Python version, you'll need a ```runtime.txt``` file. 
 
-Create one in the root directory, next to your ```requirements.txt```, ```manage.py```, ```.gitignore``` and the rest. Specify your Python version with the prefix ```python-```, followed by the major, minor, and patch version that you want your application to run on:
+**Create one** in the **root directory**, next to your ```requirements.txt```, ```manage.py```, ```.gitignore``` and the rest. **Specify your Python version** with the prefix ```python-``` that you want your application to run on:
 
 ```Shell
 python-3.9.0
@@ -791,7 +798,7 @@ python-3.9.0
 
 #### B. requirements.txt
 
-When deploying the web app, Heroku will need to install all the required dependencies for the web app to run by referring to the ```requirements.txt``` file. 
+When deploying the web app, Heroku will need to **install all the required dependencies** for the web app to run by referring to the ```requirements.txt``` file. 
 
 To ensure that all dependencies are included, consider freezing your dependencies using the command ```$ pip freeze > requirements.txt```. This will make your build a little bit more predictable by locking your exact dependency versions into your Git repo. If your dependencies aren't locked, you might find yourself deploying one version of Django one day and a new one the next.
 
@@ -811,7 +818,7 @@ web: gunicorn backend.wsgi --log-file -
 
 ### 6. Commit and Push
 
-Once all the previous steps are completed, we are ready to finally commit and push all changes:
+Once all the previous steps are completed, we are ready to **finally commit and push all changes**:
 
 ```Shell
 $ git add .
@@ -824,7 +831,7 @@ After the build is done and your app has been released, visit ```YOUR-APP-NAME.h
 
 ### 7. Database Syncing
 
-Upon successful deployment, one of the expected problems that may arise is the 500 Server Error or the following error:
+Upon successful deployment, one of the expected problems that may arise is the **500 Server Error** or the following error:
 
 ```
 ProgrammingError at /
