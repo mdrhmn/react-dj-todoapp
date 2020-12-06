@@ -44,7 +44,7 @@ Download Node.js and Node Package Manager (NPM) **[here](https://nodejs.org/en/)
 
 ### 2. Set up Virtual Environment
 
-a. Using venv (preferred)
+a. Using **venv** (preferred)
 
 - To **create** virtual environment:
     ```Shell
@@ -55,7 +55,7 @@ a. Using venv (preferred)
     $ source venv/bin/activate
     ``` 
 
-b. Using pipenv
+b. Using **pipenv**
 
 - Install pipenv:
     ```Shell
