@@ -4,18 +4,17 @@
 
 This is a simple Todo web application built using **React.js (front-end)** and **Django (back-end)**.
 
-There are mainly two ways you can deploy this kind of web app:
+There are mainly **two ways** you can deploy this kind of web app:
 
 1. **Separating Back-end and Front-end:**
-   In this method, you server your back-end and front-end apps separately and they connect to each other with their respective URIs. One major overead of this approach is you have to **configure CORS yourself**. If you don't know about CORS you can learn more here.
-
-   In this project, we will be demonstrating this longer, more complex but more flexible approach.
+   In this method, you **serve your back-end and front-end apps separately** and they **connect to each other with their respective URIs**. One major overead of this approach is you have to **configure CORS yourself**. More about CORS will be explained later in the guide.
 
 2. **Serving from the same host:**
-   In this method you will be serving the app from the same URI so it removes the CORS overhead. Also, it makes it easier to maintain smaller-medium sized apps. You don't want to create two separate repositories for some simple sites like a blog, to-do etc.
+   In this method you will be **serving the app from the same URI** so it **removes the CORS overhead**. Also, it makes it easier to maintain smaller-medium sized apps. You don't want to create two separate repositories for some simple sites like a blog, to-do etc.
 
-   This method requires building the React app first (npm run build) and update both the Django views (views.py) and urls (urls.py) to render the index.html template directly. I will try out this second, easier method in the future.<br>
+   This method requires building the React app first (npm run build) and update both the Django views (views.py) and urls (urls.py) to render the index.html template directly. 
 
+For this guide, we will be demonstrating this longer, more complex but more flexible approach for a simple todo app. I will try out this second, easier method in the future.<br>
 
 ## Technology Stack
 
