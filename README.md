@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is a simple Todo web application built using React.js (front-end) and Django (back-end).
+This is a simple Todo web application built using **React.js (front-end)** and **Django (back-end)**.
 
 There are mainly two ways you can deploy this kind of web app:
 
